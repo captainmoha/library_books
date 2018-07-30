@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="kanban_borrowed_books" model="ir.ui.view">
+    <field name="model">library.book</field>
+    <field name="arch"  type="xml">
+      <kanban class="oe_background_grey">
+        <field name="name"/>
+        <field name="times_borrowed"/>
+        <field name="available_copies"/>
+        <field name="date_release"/>
+        <field name="author_ids" widget="many2many_tags"/>
+
+        <templates>
+          <t t-name="kanban-tooltip">
+            <field name="date_release"/>
+          </t>          
+          <t t-name="kanban-box">
+            <div t-attf-class="oe_kanban_card" class="text-center">
+              <div class="text-uppercase">
+                <strong><field name="name"/></strong>
+                <em>
+                  <field name="author_ids"></field>
+                </em>
+              </div>
+              <div class="o_kanban_content">
+                <button name="borrowBook" type="object" class="btn btn-primary">
+                  <field name="times_borrowed" widget="gauge" options="{'max_value':5, 'style':'width:160px;height:120px'}"/>
+                </button> 
+                 
+                <button name="returnBook" type="object" class="oe_highlight">
+                  Return
+                </button>
+
+              </div>
+            </div>
+          </t>
+          <!-- <t t-name=""></t> -->
+        </templates>
+      </kanban>
+    </field>
+  </record>
+  <record id="library_book_action" model="ir.actions.act_window">
+    <field name="name">Books Dashboard</field>
+    <field name="res_model">library.book</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,kanban,form</field>
+  </record>
+  <menuitem id="library_book_menu"
+            name="Library"
+            action="library_book_action"
+            parent=""
+            sequence="5" />
+
+  <record id="library_book_view_form" model="ir.ui.view">
+    <field name="name">Library Book Form</field>
+    <field name="model">library.book</field>
+    <field name="arch" type="xml">
+
+      <form>
+        <group>
+          <field name="name"/>
+          <field name="author_ids" widget="many2many_tags"/>
+        </group>
+        <group>
+          <field name="date_release"/>
+        </group>
+      </form>
+
+    </field>
+  </record>
+
+  <record id="library_book_view_tree" model="ir.ui.view">
+    <field name="name">Library Book List</field>
+    <field name="model">library.book</field>
+    <field name="arch" type="xml">
+
+      <tree>
+        <field name="name"/>
+        <field name="date_release"/>
+        <field name="author_ids" widget="many2many_tags"/>
+        <field name="available_copies"/>
+      </tree>
+
+    </field>
+  </record>
+
+  <record id="library_book_view_search" model="ir.ui.view">
+    <field name="name">Library Book Search</field>
+    <field name="model">library.book</field>
+    <field name="arch" type="xml">
+
+      <search>
+        <field name="name"/>
+        <field name="author_ids"/>
+        <filter string="No Authors"
+                domain="[('author_ids','=',False)]"/>
+      </search>
+
+    </field>
+  </record>
+  
+</odoo>

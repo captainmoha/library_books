@@ -1,0 +1,1 @@
+docker-compose run --rm -p 8069:8069 odoo --dev=all -u lib_books -d lib_books
